@@ -32,6 +32,16 @@ const AdminHome = () => {
     });
   };
 
+  // convert image to base64
+  const encodeImageFileAsURL = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      setImgData(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleImg = (e) => {
     setImgData({
       [e.target.name]: e.target.files[0],
@@ -44,22 +54,23 @@ const AdminHome = () => {
       Name: formdata?.name,
       Address: formdata?.location,
       Description: formdata.desc,
-      Image: imgData.img,
+      Image: imgData,
     };
 
     try {
       const response = await axios.post(
-        "https://localhost:7028/api/Hotels/addhotel",
-        payload,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        "http://localhost:8080/touristapp/AddHotel.php",
+        payload
+        // {
+        //   headers: {
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // }
       );
+      console.log(response);
       if (response?.status === 200) {
         alert("Post added successfully");
-        window.location.reload();
+        // window.location.reload();
       }
     } catch (error) {
       alert("There was an error");
@@ -74,7 +85,7 @@ const AdminHome = () => {
     };
     try {
       const response = await axios.get(
-        "https://localhost:7028/api/Hotels/listusers",
+        "http://localhost:8080/touristapp/ListUsers.php",
         {
           params: {
             userId: payload?.userId,
@@ -82,8 +93,14 @@ const AdminHome = () => {
         }
       );
       console.log(response);
-      if (response?.status === 200) {
-        setUser(response?.data);
+      if (response?.data?.message?.length > 0) {
+        setUser(response?.data?.message);
+      }
+      if (response?.data?.message === "Failed to get Users") {
+        alert("Failed to get Users");
+      }
+      if (response?.data?.message === "Unauthorised Action") {
+        alert("Unauthorised Action");
       }
     } catch (error) {
       alert("Cannot get users, Kindly refresh");
@@ -95,8 +112,8 @@ const AdminHome = () => {
       userId: sessionStorage?.userId,
     };
     try {
-      const response = await axios.delete(
-        "https://localhost:7028/api/Hotels/deleteuser",
+      const response = await axios.get(
+        "http://localhost:8080/touristapp/RemoveUser.php",
         {
           params: {
             userId: payload?.userId,
@@ -105,9 +122,12 @@ const AdminHome = () => {
         }
       );
       console.log(response);
-      if (response?.status === 200) {
-        alert("User deleted successfully");
+      if (response?.status?.message === "User Deleted Successfully") {
+        alert("User Deleted Successfully");
         window.location.reload();
+      }
+      if (response?.status?.message === "Cannot delete, try again") {
+        alert("Cannot delete, try again");
       }
     } catch (error) {
       alert("Cannot get users, Kindly refresh");
@@ -194,16 +214,16 @@ const AdminHome = () => {
         <Modal.Body>
           {user?.map((users, index) => (
             <div
-              key={users?.id}
+              key={users?.idUsers}
               className="shadow-sm d-flex justify-content-between bg-light rounded p-3 mb-2"
             >
               <div>
-                {index + 1}. {users?.firstname} {users?.lastname}
+                {index + 1}. {users?.FirstName} {users?.LastName}
               </div>
-              <div>{users?.email}</div>
+              <div>{users?.Email}</div>
               <div
                 className="text-danger"
-                onClick={() => handleDelete(users?.id)}
+                onClick={() => handleDelete(users?.idUsers)}
                 style={{ fontWeight: 500, cursor: "pointer" }}
               >
                 Delete
@@ -266,7 +286,7 @@ const AdminHome = () => {
                 type="file"
                 name="img"
                 defaultValue={formdata?.img}
-                onChange={handleImg}
+                onChange={encodeImageFileAsURL}
                 placeholder="Add an image..."
               />
             </Form.Group>

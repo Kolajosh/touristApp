@@ -33,29 +33,32 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    // const payload = { ...formdata };
+    const payload = { ...formdata };
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         "http://localhost:8080/touristapp/Login.php",
-        {
-          params: {
-            // request: "login",
-            email: `${formdata?.email}`,
-            password: `${formdata?.password}`,
-          },
-        }
+        payload
+        // {
+        //   params: {
+        //     // request: "login",
+        //     email: `${formdata?.email}`,
+        //     password: `${formdata?.password}`,
+        //   },
+        // }
       );
       console.log(response);
-      if (response?.status === 200) {
-        alert("Login successful");
-        sessionStorage.setItem("role", response?.data?.role);
-        sessionStorage.setItem("userId", response?.data?.id);
+      console.log(response?.data?.message[0]);
+      if (response?.data?.message?.length > 0) {
+        alert("Login Successful");
+        sessionStorage.setItem("role", response?.data?.message[0]?.Role);
+        sessionStorage.setItem("userId", response?.data?.message[0]?.idUsers);
       }
-      if (response?.data?.role === "Admin") {
+
+      if (response?.data?.message[0]?.Role === "Admin") {
         window.location.href = "/admin-home";
       }
 
-      if (response?.data?.role === "User") {
+      if (response?.data?.message[0]?.Role === "User") {
         window.location.href = "/home";
       }
       console.log(response?.data);

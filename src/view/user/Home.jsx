@@ -31,13 +31,13 @@ const Home = () => {
     };
     try {
       const response = await axios.post(
-        "https://localhost:7028/api/Hotels/addcomment",
+        "http://localhost:8080/touristapp/AddComments.php",
         payload
       );
       console.log(response);
       if (response?.status === 200) {
         alert("Comment addedd successfully");
-        window.location.reload();
+        // window.location.reload();
       }
     } catch (error) {
       alert("Comment could not be added");
@@ -45,21 +45,25 @@ const Home = () => {
   };
 
   const viewHotel = async (id) => {
-    const payload = {
-      hotelid: id,
-    };
+    // const payload = {
+    //   hotelid: id,
+    // };
 
     try {
       const response = await axios.get(
-        "https://localhost:7028/api/Hotels/viewhotel",
+        "http://localhost:8080/touristapp/ViewHotel.php",
         {
-          params: payload,
+          params: {
+            hotelid: id
+          }
         }
       );
       console.log(response);
-      if (response?.status === 200) {
-        setView(response?.data);
-        setComments(JSON.parse(response?.data?.comments));
+      if (response?.data?.message?.length > 0) {
+        setView(response?.data?.message[0]);
+        console.log(response?.data?.message[0]?.Comments);
+        console.log(response?.data?.message[0]?.Comments.split(";"));
+        setComments(response?.data?.message[0]?.Comments.split(";"));
       }
     } catch (error) {
       console.log("Cannot View hotel, please refresh");
@@ -79,11 +83,14 @@ const Home = () => {
   const getHotels = async () => {
     try {
       const response = await axios.get(
-        "https://localhost:7028/api/Hotels/listhotels"
+        "http://localhost:8080/touristapp/ListHotels.php"
       );
       console.log(response);
-      if (response?.status === 200) {
-        setHotels(response?.data);
+      if (response?.data?.message?.length > 0) {
+        setHotels(response?.data?.message);
+      }
+      if (response?.data?.message === "Failed to get Hotels") {
+        alert("Failed to get hotels");
       }
     } catch (error) {
       console.log(error);
@@ -95,7 +102,7 @@ const Home = () => {
     getHotels();
   }, []);
 
-  console.log(hotels);
+  // console.log(hotels);
   console.log(view);
   // console.log(JSON.parse(view?.comments));
   return (
@@ -125,20 +132,20 @@ const Home = () => {
       <Container>
         <section className="mt-5 d-flex flex-wrap gap-5">
           {hotels?.map((item) => (
-            <Card key={item?.id} style={{ width: "18rem" }}>
+            <Card key={item?.idHotels} style={{ width: "18rem" }}>
               <Card.Img
                 variant="top"
-                src={`data:image/png;base64, ${item?.picture}`}
+                src={`${item?.Picture}`}
               />
               <Card.Body>
-                <Card.Title>{item?.name}</Card.Title>
-                <Card.Text>{item?.description}</Card.Text>
+                <Card.Title>{item?.Name}</Card.Title>
+                <Card.Text>{item?.Description}</Card.Text>
                 <Card.Text className="smallc" style={{ fontStyle: "italic" }}>
-                  Location: {item?.address}
+                  Location: {item?.Address}
                 </Card.Text>
                 <Button
                   variant="secondary"
-                  onClick={() => handleShow(item?.id)}
+                  onClick={() => handleShow(item?.idHotels)}
                 >
                   View Hotel
                 </Button>
@@ -155,18 +162,15 @@ const Home = () => {
           keyboard={false}
         >
           <Modal.Header closeButton>
-            <Modal.Title>{view?.name}</Modal.Title>
+            <Modal.Title>{view?.Name}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div>
-              <img
-                src={`data:image/png;base64, ${view?.image}`}
-                className="w-75 img-fluid"
-              />
+              <img src={`${view?.Picture}`} className="w-75 img-fluid" />
             </div>
-            <div>{view?.description}</div>
+            <div>{view?.Description}</div>
             <div className="small" style={{ fontWeight: 500 }}>
-              Location: {view?.address}
+              Location: {view?.Address}
             </div>
             <div
               className="mt-3"
@@ -175,9 +179,13 @@ const Home = () => {
               Comments
             </div>
             <div style={{ fontStyle: "italic" }}>
-              {view?.comments === null
+              {view?.Comments === null
                 ? "Be the first to comment"
-                : comments.map((comms) => <div className="shadow-sm bg-light rounded p-2 mb-2">- {comms}</div>)}
+                : comments.map((comms) => (
+                    <div className="shadow-sm bg-light rounded p-2 mb-2">
+                      - {comms}
+                    </div>
+                  ))}
             </div>
             <div className="mt-3">
               <Form>
@@ -194,7 +202,7 @@ const Home = () => {
               <div
                 className="text-end mt-2"
                 style={{ fontWeight: 500, cursor: "pointer" }}
-                onClick={() => handleComments(view?.id)}
+                onClick={() => handleComments(view?.idHotels)}
               >
                 Add comment
               </div>

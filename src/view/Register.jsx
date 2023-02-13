@@ -35,23 +35,20 @@ const Register = () => {
   };
 
   const handleSubmit = async () => {
-    // const payload = { ...formdata };
+    const payload = { ...formdata };
     try {
-      const response = await axios.get(
+      const response = await axios.post(
         "http://localhost:8080/touristapp/Register.php",
-        {
-          params: {
-            // request: "login",
-            firstname: formdata?.firstname,
-            lastname: formdata?.lastname,
-            email: `${formdata?.email}`,
-            password: `${formdata?.password}`,
-          },
-        }
+        payload
       );
-      if (response?.status === 200) {
-        alert("Account Created Successfully, Proceed to Login");
-        // window.location.href = "/";
+      console.log(response);
+      console.log(response?.data?.message);
+      if (response?.data?.message === "Registration Successful") {
+        alert("Registration successful, proceed to login");
+        window.location.href = "/";
+      }
+      if (response?.data?.message === "User Already Exists") {
+        alert("User Already exists");
       }
     } catch (error) {
       alert("Something went wrong");
