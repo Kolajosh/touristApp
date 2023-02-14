@@ -121,7 +121,7 @@ const ViewPosts = () => {
       console.log(response);
       if (response.status === 200) {
         alert("Comment removed successfully");
-        // window.location.reload();
+        window.location.reload();
       }
     } catch (error) {
       alert("Can't delete comment");
@@ -140,7 +140,7 @@ const ViewPosts = () => {
       {/* Navbar */}
       <Navbar style={style} variant="dark" sticky="top">
         <Container>
-          <Navbar.Brand href="/home">Explore Hotels</Navbar.Brand>
+          <Navbar.Brand href="/admin-home">Admin Portal</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <div className="btn-group">

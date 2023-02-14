@@ -61,16 +61,11 @@ const AdminHome = () => {
       const response = await axios.post(
         "http://localhost:8080/touristapp/AddHotel.php",
         payload
-        // {
-        //   headers: {
-        //     "Content-Type": "multipart/form-data",
-        //   },
-        // }
       );
       console.log(response);
       if (response?.status === 200) {
         alert("Post added successfully");
-        // window.location.reload();
+        window.location.reload();
       }
     } catch (error) {
       alert("There was an error");
@@ -122,7 +117,7 @@ const AdminHome = () => {
         }
       );
       console.log(response);
-      if (response?.status?.message === "User Deleted Successfully") {
+      if (response?.data?.message === "User Deleted Successfully") {
         alert("User Deleted Successfully");
         window.location.reload();
       }
@@ -157,7 +152,7 @@ const AdminHome = () => {
       {/* Navbar */}
       <Navbar style={style} variant="dark" sticky="top">
         <Container>
-          <Navbar.Brand href="/home">Admin Portal</Navbar.Brand>
+          <Navbar.Brand href="/admin-home">Admin Portal</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <div className="btn-group">

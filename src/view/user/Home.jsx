@@ -37,7 +37,7 @@ const Home = () => {
       console.log(response);
       if (response?.status === 200) {
         alert("Comment addedd successfully");
-        // window.location.reload();
+        window.location.reload();
       }
     } catch (error) {
       alert("Comment could not be added");
@@ -54,8 +54,8 @@ const Home = () => {
         "http://localhost:8080/touristapp/ViewHotel.php",
         {
           params: {
-            hotelid: id
-          }
+            hotelid: id,
+          },
         }
       );
       console.log(response);
@@ -63,7 +63,7 @@ const Home = () => {
         setView(response?.data?.message[0]);
         console.log(response?.data?.message[0]?.Comments);
         console.log(response?.data?.message[0]?.Comments.split(";"));
-        setComments(response?.data?.message[0]?.Comments.split(";"));
+        setComments(response?.data?.message[0]?.Comments.split(","));
       }
     } catch (error) {
       console.log("Cannot View hotel, please refresh");
@@ -90,6 +90,7 @@ const Home = () => {
         setHotels(response?.data?.message);
       }
       if (response?.data?.message === "Failed to get Hotels") {
+        setHotels(null);
         alert("Failed to get hotels");
       }
     } catch (error) {
@@ -102,7 +103,7 @@ const Home = () => {
     getHotels();
   }, []);
 
-  // console.log(hotels);
+  console.log(hotels?.length);
   console.log(view);
   // console.log(JSON.parse(view?.comments));
   return (
@@ -131,27 +132,35 @@ const Home = () => {
       {/* Hotel cards */}
       <Container>
         <section className="mt-5 d-flex flex-wrap gap-5">
-          {hotels?.map((item) => (
-            <Card key={item?.idHotels} style={{ width: "18rem" }}>
-              <Card.Img
-                variant="top"
-                src={`${item?.Picture}`}
-              />
-              <Card.Body>
-                <Card.Title>{item?.Name}</Card.Title>
-                <Card.Text>{item?.Description}</Card.Text>
-                <Card.Text className="smallc" style={{ fontStyle: "italic" }}>
-                  Location: {item?.Address}
-                </Card.Text>
-                <Button
-                  variant="secondary"
-                  onClick={() => handleShow(item?.idHotels)}
-                >
-                  View Hotel
-                </Button>
-              </Card.Body>
-            </Card>
-          ))}
+          {hotels?.length > 0 ? (
+            <>
+              {hotels?.map((item) => (
+                <Card key={item?.idHotels} style={{ width: "18rem" }}>
+                  <Card.Img variant="top" src={`${item?.Picture}`} />
+                  <Card.Body>
+                    <Card.Title>{item?.Name}</Card.Title>
+                    <Card.Text>{item?.Description}</Card.Text>
+                    <Card.Text
+                      className="smallc"
+                      style={{ fontStyle: "italic" }}
+                    >
+                      Location: {item?.Address}
+                    </Card.Text>
+                    <Button
+                      variant="secondary"
+                      onClick={() => handleShow(item?.idHotels)}
+                    >
+                      View Hotel
+                    </Button>
+                  </Card.Body>
+                </Card>
+              ))}
+            </>
+          ) : (
+            <>
+              <h3>No Hotels added yet</h3>
+            </>
+          )}
         </section>
 
         {/* View hotel modal */}

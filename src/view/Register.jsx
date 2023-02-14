@@ -41,11 +41,12 @@ const Register = () => {
         "http://localhost:8080/touristapp/Register.php",
         payload
       );
-      console.log(response);
-      console.log(response?.data?.message);
       if (response?.data?.message === "Registration Successful") {
         alert("Registration successful, proceed to login");
         window.location.href = "/";
+      }
+      if (response?.data?.message === "Please fill all fields") {
+        alert("Please fill all fields");
       }
       if (response?.data?.message === "User Already Exists") {
         alert("User Already exists");

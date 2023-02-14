@@ -38,16 +38,8 @@ const Login = () => {
       const response = await axios.post(
         "http://localhost:8080/touristapp/Login.php",
         payload
-        // {
-        //   params: {
-        //     // request: "login",
-        //     email: `${formdata?.email}`,
-        //     password: `${formdata?.password}`,
-        //   },
-        // }
       );
-      console.log(response);
-      console.log(response?.data?.message[0]);
+
       if (response?.data?.message?.length > 0) {
         alert("Login Successful");
         sessionStorage.setItem("role", response?.data?.message[0]?.Role);
@@ -63,7 +55,6 @@ const Login = () => {
       }
       console.log(response?.data);
     } catch (error) {
-      console.log(error);
       alert("Login failed, check details");
     }
   };
