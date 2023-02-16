@@ -1,0 +1,8 @@
+.big-btn{
+    transition: 0.5s;
+    cursor: pointer;
+}
+.big-btn:hover{
+    background: #2F4F4F;
+    color: white
+}

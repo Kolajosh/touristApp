@@ -90,6 +90,7 @@ const ViewPosts = () => {
         setHotels(response?.data?.message);
       }
       if (response?.data?.message === "Failed to get Hotels") {
+        setHotels(null);
         alert("Failed to get hotels");
       }
     } catch (error) {
@@ -161,24 +162,35 @@ const ViewPosts = () => {
       {/* Hotel cards */}
       <Container>
         <section className="mt-5 d-flex flex-wrap gap-5">
-          {hotels?.map((item) => (
-            <Card key={item?.idHotels} style={{ width: "18rem" }}>
-              <Card.Img variant="top" src={`${item?.Picture}`} />
-              <Card.Body>
-                <Card.Title>{item?.Name}</Card.Title>
-                <Card.Text>{item?.Description}</Card.Text>
-                <Card.Text className="smallc" style={{ fontStyle: "italic" }}>
-                  Location: {item?.Address}
-                </Card.Text>
-                <Button
-                  variant="secondary"
-                  onClick={() => handleShow(item?.idHotels)}
-                >
-                  View Hotel
-                </Button>
-              </Card.Body>
-            </Card>
-          ))}
+          {hotels?.length > 0 ? (
+            <>
+              {hotels?.map((item) => (
+                <Card key={item?.idHotels} style={{ width: "18rem" }}>
+                  <Card.Img variant="top" src={`${item?.Picture}`} />
+                  <Card.Body>
+                    <Card.Title>{item?.Name}</Card.Title>
+                    <Card.Text>{item?.Description}</Card.Text>
+                    <Card.Text
+                      className="smallc"
+                      style={{ fontStyle: "italic" }}
+                    >
+                      Location: {item?.Address}
+                    </Card.Text>
+                    <Button
+                      variant="secondary"
+                      onClick={() => handleShow(item?.idHotels)}
+                    >
+                      View Hotel
+                    </Button>
+                  </Card.Body>
+                </Card>
+              ))}
+            </>
+          ) : (
+            <>
+              <h3>No Hotels added yet</h3>
+            </>
+          )}
         </section>
 
         {/* View hotel modal */}
