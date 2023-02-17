@@ -19,7 +19,7 @@ const LandingPage = () => {
       {/* Navbar */}
       <Navbar className="py-3" style={style} variant="dark" sticky="top">
         <Container>
-          <Navbar.Brand href="/home">Explore Hotels</Navbar.Brand>
+          <Navbar.Brand>Explore Hotels</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end"></Navbar.Collapse>
         </Container>
