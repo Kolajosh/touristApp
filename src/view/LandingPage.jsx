@@ -1,5 +1,5 @@
 import React from "react";
-import { Carousel, Container, Navbar } from "react-bootstrap";
+import { Carousel, Container, Nav, Navbar } from "react-bootstrap";
 import "./LandingPage.css";
 import img1 from "../assets/img1.jpg";
 import img2 from "../assets/img2.jpg";
@@ -21,7 +21,12 @@ const LandingPage = () => {
         <Container>
           <Navbar.Brand>Explore Hotels</Navbar.Brand>
           <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end"></Navbar.Collapse>
+          <Navbar.Collapse className="justify-content-end">
+            <Nav>
+              <Nav.Link href="#about">About</Nav.Link>
+              <Nav.Link href="#contact">Contact</Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
 
@@ -104,6 +109,32 @@ const LandingPage = () => {
           </Carousel.Caption>
         </Carousel.Item>
       </Carousel>
+
+      <Container>
+        <h3 className="lead fs-1 my-5" id="about">About</h3>
+        <div className="lead">
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia,
+          accusamus. Earum eveniet aperiam adipisci explicabo libero ut commodi.
+          Magni non eos totam ad fugit reprehenderit deserunt ex culpa tenetur
+          quia atque, veniam iste, distinctio modi sunt omnis, adipisci quae
+          quas reiciendis quaerat. Similique accusantium, molestiae quidem
+          quasi, et consequuntur doloremque, cumque expedita voluptatem nostrum
+          nam. Dicta sapiente consectetur possimus officiis culpa id doloribus
+          sint sequi nesciunt itaque perferendis nam cupiditate veniam pariatur
+          nobis voluptates commodi quod, fuga provident dignissimos? Aliquam vel
+          debitis ducimus corrupti dicta ad voluptatibus quis asperiores maxime
+          corporis non cum, tenetur recusandae laboriosam aspernatur. Earum,
+          molestiae tenetur!
+        </div>
+      </Container>
+
+      <Container>
+        <div className="d-flex justify-content-center gap-4 my-5">
+          <div className="lead">joojo@gmail.com</div>
+          <div className="lead">+234 081 00 000 000</div>
+          <div className="lead">Aberdeen, Scotland</div>
+        </div>
+      </Container>
     </>
   );
 };
