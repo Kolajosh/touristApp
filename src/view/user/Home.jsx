@@ -12,10 +12,71 @@ const Home = () => {
   const [view, setView] = useState();
   const [show, setShow] = useState(false);
   const [comments, setComments] = useState([]);
+  const [showAddPost, setAddPost] = useState(false);
+
+  const handleCloseAddPosts = () => {
+    setAddPost(false);
+  };
+  const handleAddPosts = () => {
+    setAddPost(true);
+  };
+
+  // formdata to collect post details
+  const [post, setPost] = useState({
+    name: "",
+    desc: "",
+    location: "",
+  });
+
+  const handlePostChange = (e) => {
+    setPost({
+      ...formdata,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // formdata to collect img details
+  const [imgData, setImgData] = useState({
+    img: "",
+  });
+
+  // convert image to base64
+  const encodeImageFileAsURL = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = function () {
+      setImgData(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const [formdata, setFormdata] = useState({
     comment: "",
   });
+
+  // add post
+  const handleUpload = async () => {
+    const payload = {
+      Name: post?.name,
+      Address: post?.location,
+      Description: post.desc,
+      Image: imgData,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/touristapp/AddHotel.php",
+        payload
+      );
+      console.log(response);
+      if (response?.status === 200) {
+        alert("Post added successfully");
+        window.location.reload();
+      }
+    } catch (error) {
+      alert("There was an error");
+    }
+  };
 
   const handleChange = (e) => {
     setFormdata({
@@ -104,17 +165,16 @@ const Home = () => {
   }, []);
 
   console.log(hotels?.length);
-  console.log(view);
-  // console.log(JSON.parse(view?.comments));
   return (
     <>
       {/* Navbar */}
       <Navbar style={style} variant="dark" sticky="top">
         <Container>
-          <Navbar.Brand href="/home">Explore Hotels</Navbar.Brand>
+          <Navbar.Brand href="/home">Browse Stories</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <div className="btn-group">
+              <Navbar.Text onClick={handleAddPosts} className="mx-5" role="button">Add Stories</Navbar.Text>
               <Navbar.Text>
                 Hi,
                 <span
@@ -150,7 +210,7 @@ const Home = () => {
                       variant="secondary"
                       onClick={() => handleShow(item?.idHotels)}
                     >
-                      View Hotel
+                      View Post
                     </Button>
                   </Card.Body>
                 </Card>
@@ -158,7 +218,7 @@ const Home = () => {
             </>
           ) : (
             <>
-              <h3>No Hotels added yet</h3>
+              <h3>No Stories added yet</h3>
             </>
           )}
         </section>
@@ -224,6 +284,73 @@ const Home = () => {
           </Modal.Footer>
         </Modal>
       </Container>
+
+      {/*Add Posts modal */}
+      <Modal
+        show={showAddPost}
+        onHide={handleCloseAddPosts}
+        backdrop="static"
+        keyboard={false}
+        className=""
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Add Post</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group>
+              <Form.Label>Name of Hotel</Form.Label>
+              <Form.Control
+                type="text"
+                name="name"
+                defaultValue={post?.name}
+                onChange={handlePostChange}
+                placeholder="Name of hotel..."
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Location</Form.Label>
+              <Form.Control
+                type="text"
+                name="location"
+                defaultValue={post?.location}
+                onChange={handlePostChange}
+                placeholder="Add location..."
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="desc"
+                defaultValue={post?.desc}
+                onChange={handlePostChange}
+                placeholder="Add a description..."
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Add an image</Form.Label>
+              <Form.Control
+                type="file"
+                name="img"
+                defaultValue={post?.img}
+                onChange={encodeImageFileAsURL}
+                placeholder="Add an image..."
+              />
+            </Form.Group>
+
+            <div className="text-end my-3">
+              <Button onClick={() => handleUpload()} type="button" className="">
+                Add Post
+              </Button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

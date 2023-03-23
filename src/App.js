@@ -5,6 +5,7 @@ import AdminHome from "./view/admin/AdminHome";
 import Register from "./view/Register";
 import ViewPosts from "./view/admin/ViewPosts";
 import LandingPage from "./view/LandingPage";
+import About from "./view/About";
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
         </Route>
         <Route path="/home">
           <Route index element={<Home />} />
+        </Route>
+        <Route path="/about">
+          <Route index element={<About />} />
         </Route>
         <Route path="/">
           <Route index element={<LandingPage />} />

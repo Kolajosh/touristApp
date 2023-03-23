@@ -1,13 +1,14 @@
 import React from "react";
 import { Carousel, Container, Nav, Navbar } from "react-bootstrap";
 import "./LandingPage.css";
-import img1 from "../assets/img1.jpg";
-import img2 from "../assets/img2.jpg";
-import img3 from "../assets/img3.jpg";
+// import img1 from "../assets/img1.jpg";
+import img2 from "../assets/new.jpg";
+// import img3 from "../assets/img3.jpg";
+import img4 from "../assets/logo123.png";
 
 const LandingPage = () => {
   const style = {
-    backgroundColor: "#2F4F4F",
+    background: "#2F4F4F",
   };
 
   const handleClick = () => {
@@ -15,127 +16,76 @@ const LandingPage = () => {
   };
 
   return (
-    <>
-      {/* Navbar */}
-      <Navbar className="py-3" style={style} variant="dark" sticky="top">
-        <Container>
-          <Navbar.Brand>Explore Hotels</Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Nav>
-              <Nav.Link href="#about">About</Nav.Link>
-              <Nav.Link href="#contact">Contact</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
-      <Carousel>
-        <Carousel.Item>
-          <img className="d-block w-100" src={img1} alt="First slide" />
-          <Carousel.Caption>
-            <div className="p-5">
-              <h1 className="lead" style={{ fontSize: "70px" }}>
-                Explore vasts <span style={{ fontWeight: 500 }}>hotels</span>
-              </h1>
-              <h1 className="lead" style={{ fontSize: "70px" }}>
-                and get the absolute best
-              </h1>
-              <h1
-                className="lead"
-                style={{ fontSize: "70px", fontWeight: 500 }}
-              >
-                Experience
-              </h1>
-              <div
-                className="big-btn mt-5 fs-2 lead p-5 border rounded rounded-2"
-                onClick={() => handleClick()}
-              >
-                View Hotels
-              </div>
-            </div>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item>
-          <img className="d-block w-100" src={img2} alt="Second slide" />
-
-          <Carousel.Caption>
-            <div className="p-5">
-              <h1 className="lead" style={{ fontSize: "70px" }}>
-                Explore vasts <span style={{ fontWeight: 500 }}>hotels</span>
-              </h1>
-              <h1 className="lead" style={{ fontSize: "70px" }}>
-                and get the absolute best
-              </h1>
-              <h1
-                className="lead"
-                style={{ fontSize: "70px", fontWeight: 500 }}
-              >
-                Experience
-              </h1>
-              <div
-                className="big-btn mt-5 fs-2 lead p-5 border rounded rounded-2"
-                onClick={() => handleClick()}
-              >
-                View Hotels
-              </div>
-            </div>
-          </Carousel.Caption>
-        </Carousel.Item>
-        <Carousel.Item>
-          <img className="d-block w-100" src={img3} alt="Third slide" />
-
-          <Carousel.Caption>
-            <div className="p-5">
-              <h1 className="lead" style={{ fontSize: "70px" }}>
-                Explore vasts <span style={{ fontWeight: 500 }}>hotels</span>
-              </h1>
-              <h1 className="lead" style={{ fontSize: "70px" }}>
-                and get the absolute best
-              </h1>
-              <h1
-                className="lead"
-                style={{ fontSize: "70px", fontWeight: 500 }}
-              >
-                Experience
-              </h1>
-              <div
-                className="big-btn mt-5 fs-2 lead p-5 border rounded rounded-2"
-                onClick={() => handleClick()}
-              >
-                View Hotels
-              </div>
-            </div>
-          </Carousel.Caption>
-        </Carousel.Item>
-      </Carousel>
-
+    <div
+      className="d-flex align-items-center"
+      style={{
+        background: `url(${img2})`,
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        height: "100vh",
+        maxWidth: "100%",
+      }}
+    >
       <Container>
-        <h3 className="lead fs-1 my-5" id="about">About</h3>
-        <div className="lead">
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Officia,
-          accusamus. Earum eveniet aperiam adipisci explicabo libero ut commodi.
-          Magni non eos totam ad fugit reprehenderit deserunt ex culpa tenetur
-          quia atque, veniam iste, distinctio modi sunt omnis, adipisci quae
-          quas reiciendis quaerat. Similique accusantium, molestiae quidem
-          quasi, et consequuntur doloremque, cumque expedita voluptatem nostrum
-          nam. Dicta sapiente consectetur possimus officiis culpa id doloribus
-          sint sequi nesciunt itaque perferendis nam cupiditate veniam pariatur
-          nobis voluptates commodi quod, fuga provident dignissimos? Aliquam vel
-          debitis ducimus corrupti dicta ad voluptatibus quis asperiores maxime
-          corporis non cum, tenetur recusandae laboriosam aspernatur. Earum,
-          molestiae tenetur!
+        <div className="d-flex h-100 align-items-center justify-content-between">
+          <div>
+            <div className="lead fs-1 fw-bold" id="about" style={{}}>
+              <img className="w-50" src={img4} alt="logo" />
+            </div>
+            <div className="lead mt-3 text-white">
+              Sharing tour and travel stories within abeerden
+            </div>
+          </div>
+
+          <div>
+            <div className="p-5 bg-light bg-opacity-50 ">
+              {/* <button
+                onClick={() => (window.location.href = "/home")}
+                className="px-2 py-3 w-100 mb-4 bg-transparent border-light fw-normal"
+              >
+                Home
+              </button> */}
+              <button
+                onClick={() => (window.location.href = "/login")}
+                className="px-2 py-3 w-100 mb-4 bg-transparent border-light fw-normal"
+              >
+                Login/Sign up
+              </button>
+              <button
+                onClick={() => (window.location.href = "/login")}
+                className="px-2 py-3 w-100 mb-4 bg-transparent border-light fw-normal"
+              >
+                Read Stories
+              </button>
+              <button
+                onClick={() => (window.location.href = "/login")}
+                className="px-2 py-3 w-100 mb-4 bg-transparent border-light fw-normal"
+              >
+                Upload Stories
+              </button>
+              <button
+                onClick={() => (window.location.href = "/about")}
+                className="px-2 py-3 w-100 mb-4 bg-transparent border-light fw-normal"
+              >
+                About Us
+              </button>
+              <button className="px-2 py-3 w-100 mb-4 bg-transparent border-light fw-normal">
+                Help
+              </button>
+            </div>
+          </div>
         </div>
       </Container>
 
-      <Container>
+      {/* <Container>
         <div className="d-flex justify-content-center gap-4 my-5">
           <div className="lead">joojo@gmail.com</div>
           <div className="lead">+234 081 00 000 000</div>
           <div className="lead">Aberdeen, Scotland</div>
         </div>
-      </Container>
-    </>
+      </Container> */}
+    </div>
   );
 };
 
