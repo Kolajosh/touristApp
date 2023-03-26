@@ -129,12 +129,65 @@ const ViewPosts = () => {
     }
   };
 
+  const removeHotel = async (id) => {
+    // const payload = {
+    //   hotelid: id,
+    // };
+
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/touristapp/RemovePost.php",
+        {
+          params: {
+            hotelid: id,
+          },
+        }
+      );
+      console.log(response);
+      if (response?.data?.message === "Post Deleted Successfully") {
+        alert("Post Deleted Successfully");
+        window.location.reload();
+      }
+      if (response?.status?.message === "Cannot delete, try again") {
+        alert("Cannot delete, try again");
+      }
+    } catch (error) {
+      alert("Cannot get users, Kindly refresh");
+    }
+  };
+
+  const handleEdit = async (id) => {
+    // const payload = {
+    //   hotelid: id,
+    // };
+
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/touristapp/EditPost.php",
+        {
+          params: {
+            id: id,
+          },
+        }
+      );
+      console.log(response?.data);
+      //   if (response?.data?.message === "Post Deleted Successfully") {
+      //     alert("Post Deleted Successfully");
+      //     window.location.reload();
+      //   }
+      //   if (response?.status?.message === "Cannot delete, try again") {
+      //     alert("Cannot delete, try again");
+      //   }
+    } catch (error) {
+      alert("Cannot get users, Kindly refresh");
+    }
+  };
+
   useEffect(() => {
     getHotels();
   }, []);
 
   console.log(hotels);
-  console.log(view);
   // console.log(JSON.parse(view?.comments));
   return (
     <>
@@ -159,6 +212,10 @@ const ViewPosts = () => {
         </Container>
       </Navbar>
 
+      <Container>
+        <div className="my-3">Number of Posts: {hotels?.length}</div>
+      </Container>
+
       {/* Hotel cards */}
       <Container>
         <section className="mt-5 d-flex flex-wrap gap-5">
@@ -180,8 +237,20 @@ const ViewPosts = () => {
                       variant="secondary"
                       onClick={() => handleShow(item?.idHotels)}
                     >
-                      View Hotel
+                      View Post
                     </Button>
+                    <Button
+                      variant="danger"
+                      onClick={() => removeHotel(item?.idHotels)}
+                    >
+                      Delete
+                    </Button>
+                    {/* <Button
+                      variant="info"
+                      onClick={() => handleEdit(item?.idHotels)}
+                    >
+                      Edit
+                    </Button> */}
                   </Card.Body>
                 </Card>
               ))}

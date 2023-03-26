@@ -30,7 +30,7 @@ const Home = () => {
 
   const handlePostChange = (e) => {
     setPost({
-      ...formdata,
+      ...post,
       [e.target.name]: e.target.value,
     });
   };
@@ -59,7 +59,7 @@ const Home = () => {
     const payload = {
       Name: post?.name,
       Address: post?.location,
-      Description: post.desc,
+      Description: post?.desc,
       Image: imgData,
     };
 
@@ -131,6 +131,60 @@ const Home = () => {
     }
   };
 
+  const removeHotel = async (id) => {
+    // const payload = {
+    //   hotelid: id,
+    // };
+
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/touristapp/RemovePost.php",
+        {
+          params: {
+            hotelid: id,
+          },
+        }
+      );
+      console.log(response);
+      if (response?.data?.message === "Post Deleted Successfully") {
+        alert("Post Deleted Successfully");
+        window.location.reload();
+      }
+      if (response?.status?.message === "Cannot delete, try again") {
+        alert("Cannot delete, try again");
+      }
+    } catch (error) {
+      alert("Cannot get users, Kindly refresh");
+    }
+  };
+
+  const handleEdit = async (id) => {
+    // const payload = {
+    //   hotelid: id,
+    // };
+
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/touristapp/EditPost.php",
+        {
+          params: {
+            id: id,
+          },
+        }
+      );
+      console.log(response?.data);
+      //   if (response?.data?.message === "Post Deleted Successfully") {
+      //     alert("Post Deleted Successfully");
+      //     window.location.reload();
+      //   }
+      //   if (response?.status?.message === "Cannot delete, try again") {
+      //     alert("Cannot delete, try again");
+      //   }
+    } catch (error) {
+      alert("Cannot get users, Kindly refresh");
+    }
+  };
+
   const handleClose = () => setShow(false);
   const handleShow = (id) => {
     viewHotel(id);
@@ -165,6 +219,7 @@ const Home = () => {
   }, []);
 
   console.log(hotels?.length);
+  console.log(sessionStorage);
   return (
     <>
       {/* Navbar */}
@@ -174,7 +229,13 @@ const Home = () => {
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <div className="btn-group">
-              <Navbar.Text onClick={handleAddPosts} className="mx-5" role="button">Add Stories</Navbar.Text>
+              <Navbar.Text
+                onClick={handleAddPosts}
+                className="mx-5"
+                role="button"
+              >
+                Add Stories
+              </Navbar.Text>
               <Navbar.Text>
                 Hi,
                 <span
@@ -189,10 +250,15 @@ const Home = () => {
         </Container>
       </Navbar>
 
+      <Container>
+        {sessionStorage?.userId && (
+          <div className="my-3">Number of Posts: {hotels?.length}</div>
+        )}
+      </Container>
       {/* Hotel cards */}
       <Container>
         <section className="mt-5 d-flex flex-wrap gap-5">
-          {hotels?.length > 0 ? (
+          {hotels?.length > 0 && !sessionStorage?.userId ? (
             <>
               {hotels?.map((item) => (
                 <Card key={item?.idHotels} style={{ width: "18rem" }}>
@@ -206,12 +272,64 @@ const Home = () => {
                     >
                       Location: {item?.Address}
                     </Card.Text>
-                    <Button
-                      variant="secondary"
-                      onClick={() => handleShow(item?.idHotels)}
+                    <div className="d-flex justify-content-between">
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleShow(item?.idHotels)}
+                      >
+                        View Post
+                      </Button>
+                      {/* <Button
+                        variant="danger"
+                        onClick={() => removeHotel(item?.idHotels)}
+                      >
+                        Delete
+                      </Button> */}
+                      {/* <Button
+                        variant="info"
+                        onClick={() => handleEdit(item?.idHotels)}
+                      >
+                        Edit
+                      </Button> */}
+                    </div>
+                  </Card.Body>
+                </Card>
+              ))}
+            </>
+          ) : hotels?.length > 0 && sessionStorage?.userId ? (
+            <>
+              {hotels?.map((item) => (
+                <Card key={item?.idHotels} style={{ width: "18rem" }}>
+                  <Card.Img variant="top" src={`${item?.Picture}`} />
+                  <Card.Body>
+                    <Card.Title>{item?.Name}</Card.Title>
+                    <Card.Text>{item?.Description}</Card.Text>
+                    <Card.Text
+                      className="smallc"
+                      style={{ fontStyle: "italic" }}
                     >
-                      View Post
-                    </Button>
+                      Location: {item?.Address}
+                    </Card.Text>
+                    <div className="d-flex justify-content-between">
+                      <Button
+                        variant="secondary"
+                        onClick={() => handleShow(item?.idHotels)}
+                      >
+                        View Post
+                      </Button>
+                      <Button
+                        variant="danger"
+                        onClick={() => removeHotel(item?.idHotels)}
+                      >
+                        Delete
+                      </Button>
+                      {/* <Button
+                        variant="info"
+                        onClick={() => handleEdit(item?.idHotels)}
+                      >
+                        Edit
+                      </Button> */}
+                    </div>
                   </Card.Body>
                 </Card>
               ))}

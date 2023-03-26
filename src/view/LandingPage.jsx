@@ -53,7 +53,7 @@ const LandingPage = () => {
                 Login/Sign up
               </button>
               <button
-                onClick={() => (window.location.href = "/login")}
+                onClick={() => (window.location.href = "/home")}
                 className="px-2 py-3 w-100 mb-4 bg-transparent border-light fw-normal"
               >
                 Read Stories
